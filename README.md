@@ -8,26 +8,6 @@ A fullstack job application tracker where users can create, view, update, and de
 
 ---
 
-## 📁 Project Structure
-
-jobTrackerApp/
-├── client/        # React frontend (Vite + TSX)
-│   ├── src/
-│   ├── public/
-│   ├── .gitignore
-│   └── ...
-├── server/        # Express backend (TypeScript)
-│   ├── controllers/
-│   ├── routes/
-│   ├── data/
-│   ├── .gitignore
-│   ├── server.ts
-│   └── ...
-├── README.md
-└── LICENSE
-
----
-
 ## ⚙️ Setup Instructions
 
 ### 🔧 Backend Setup (Express + TypeScript)
