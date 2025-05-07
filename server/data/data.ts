@@ -9,10 +9,16 @@ export interface Job {
     notes: string;
 }
 
+// export const IDs: string[] = [
+//     uuidv4(),
+//     uuidv4(),
+//     uuidv4(),
+//     uuidv4(),
+// ]
 
 export const jobs: Job[] = [
     {
-      "id": uuidv4(),
+      "id": "1",
       "companyName": "OpenAI",
       "jobTitle": "Software Engineer",
       "applicationStatus": "Applied",
@@ -20,7 +26,7 @@ export const jobs: Job[] = [
       "notes": "Applied through the careers page. Waiting to hear back."
     },
     {
-      "id": uuidv4(),
+      "id": "2",
       "companyName": "Google",
       "jobTitle": "Backend Developer",
       "applicationStatus": "Interviewing",
@@ -28,7 +34,7 @@ export const jobs: Job[] = [
       "notes": "Completed phone screen, onsite interview scheduled."
     },
     {
-      "id": uuidv4(),
+      "id": "3",
       "companyName": "Spotify",
       "jobTitle": "Full Stack Intern",
       "applicationStatus": "Rejected",
@@ -36,7 +42,7 @@ export const jobs: Job[] = [
       "notes": "Rejection email received. Will try again next cycle."
     },
     {
-      "id": uuidv4(),
+      "id": "4",
       "companyName": "Stripe",
       "jobTitle": "Frontend Engineer",
       "applicationStatus": "Offer",
