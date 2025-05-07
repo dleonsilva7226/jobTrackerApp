@@ -12,14 +12,14 @@ apiRouter.route('/')
         await getAllData(req, res) //gets all jobs - TESTED and Works
     }) 
     .post(async (req: Request, res: Response) => {
-        await createJob(req, res) //creates a new job
+        await createJob(req, res) //creates a new job - TESTED and Works
     })  
     
 
-// apiRouter.route('/:id')
-//     .put(async (req: Request, res: Response) => {
-//         await updateJob(req, res)// Updates a job by ID
-//     })
-//     .delete(async (req: Request, res: Response) => {
-//         await deleteJobByID(req, res) // Deletes a job by ID
-//     })  
+apiRouter.route('/:id')
+    .put(async (req: Request, res: Response) => {
+        await updateJob(req, res)// Updates a job by ID - TESTED and Works
+    })
+    .delete(async (req: Request, res: Response) => {
+        await deleteJobByID(req, res) // Deletes a job by ID - TESTED and Works
+    })  
