@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import { Job, jobs } from '../data/data.ts'
+import { Job, jobs } from '../data/jobData.ts'
 import { v4 as uuidv4 } from 'uuid'
 
 export const deleteJobByID = async (req: Request, res: Response): Promise<void> => {   

@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from 'uuid'
 import { Request, Response } from 'express'
-import { Job, jobs } from '../data/data'
+import { Job, jobs } from '../data/jobData'
 export interface CreateJobRequest {
     companyName: string;
     jobTitle: string;
