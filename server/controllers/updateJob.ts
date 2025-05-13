@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import { jobs } from '../data/data'
+import { jobs } from '../data/jobData'
 import { v4 as uuidv4 } from 'uuid'
 export const updateJob = async (req: Request, res: Response): Promise<void> => {
     const { id } = req.params

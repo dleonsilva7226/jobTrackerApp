@@ -1,4 +1,4 @@
-import { Job, jobs } from '../data/data.ts'
+import { Job, jobs } from '../data/jobData.ts'
 
 import { Request, Response } from 'express';
 

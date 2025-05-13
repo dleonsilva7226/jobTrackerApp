@@ -50,3 +50,4 @@ export const jobs: Job[] = [
       "notes": "Received offer, considering salary and role fit."
     }
   ]
+
