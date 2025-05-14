@@ -1,8 +1,8 @@
 import express from 'express';
 import { Application } from 'express';
 import cors from 'cors';
-import jwt from 'jsonwebtoken';
-import { apiRouter } from './routes/apiRoutes';
+import { jobRouter } from './routes/jobRoutes';
+import { authRouter } from './routes/authRoutes';
 
 const PORT: number = 8000;
 const app: Application = express();
@@ -12,8 +12,9 @@ app.use(cors());
 app.use(express.json());
 
 
-// Routes
-app.use('/jobs', apiRouter);
+// Routes for jobs and authentication
+app.use('/jobs', jobRouter);
+app.use('/auth', authRouter);
 
 app.use((req, res) => {
     res.status(404).json({ message: 'Job not Found' });
