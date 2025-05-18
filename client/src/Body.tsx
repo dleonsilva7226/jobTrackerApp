@@ -1,27 +1,25 @@
 import React, { useState } from "react";
-import getJobData, { type Job } from "./getJobData";
+import { type Job } from "./getJobData";
 import { useEffect } from "react";
+import AppModal from "./AppModal";
+import { FilterStatuses } from "./FilterStatuses";
 
-const Body: React.FC = () => {
-    const [jobData, setJobData] = useState<Job[]>([]); // Initialize state to hold job data
-    const [filter, setFilter] = useState<string>(""); // Initialize state to hold filter value
-    useEffect(() => {
-        const getJobs = async () => {
-            try {
-                const data = await getJobData();
-                setJobData(data);
-            } catch (error) {
-                console.error('Error fetching job data:', error);
-            }
-        };
-        console.log("Fetching job data...");
-        getJobs();
-    }, []);
+export interface BodyProps {
+    modalStatus: boolean;
+    setModalStatus: React.Dispatch<React.SetStateAction<boolean>>;
+    currentJobData: Job[];
+    setCurrentJobData: React.Dispatch<React.SetStateAction<Job[]>>;
+    currentFilter: FilterStatuses
+}
+
+const Body: React.FC<BodyProps> = ({modalStatus, setModalStatus, currentJobData, setCurrentJobData, currentFilter}) => {
+    // Function to handle filter input change
+    const closeModal = () => { setModalStatus(false); }
 
     const handleSelectInput = (event: React.FormEvent<HTMLSelectElement>) => {
         const target = event.target as HTMLSelectElement;
         const [field, id] = target.id.split("-"); // e.g., ['jobTitle', '123']
-        const newJobData = [...jobData];
+        const newJobData = [...currentJobData];
         const index = newJobData.findIndex(job => job.id === id);
         if (index !== -1 && field === "applicationStatus") {
             console.log("Updating job data...");
@@ -29,7 +27,7 @@ const Body: React.FC = () => {
                 ...newJobData[index],
                 [field]: target.value,
             };
-            setJobData(newJobData);
+            setCurrentJobData(newJobData);
         }
         console.log("Job data updated:", newJobData);
     };
@@ -37,7 +35,7 @@ const Body: React.FC = () => {
     const handleDivInput = (event: React.FormEvent<HTMLDivElement>) => {
         const target = event.target as HTMLDivElement;
         const [field, id] = target.id.split("-"); // e.g., ['jobTitle', '123']
-        const newJobData = [...jobData];
+        const newJobData = [...currentJobData];
         const index = newJobData.findIndex(job => job.id === id);
         if (index !== -1 && ["jobTitle", "companyName", "applicationDate", "notes"].includes(field)) {
             console.log("Updating job data...");
@@ -45,7 +43,7 @@ const Body: React.FC = () => {
                 ...newJobData[index],
                 [field]: target.innerText,
             };
-            setJobData(newJobData);
+            setCurrentJobData(newJobData);
         }
         console.log("Job data updated:", newJobData);
     };
@@ -60,7 +58,8 @@ const Body: React.FC = () => {
                     {label}
                 </div>
                 ))}
-                {jobData.map((job) => (
+                {(currentFilter === FilterStatuses.Nothing 
+                && currentJobData.map((job) => (
                 <React.Fragment key={job.id}>
                     <div 
                         id={`jobTitle-${job.id}`}
@@ -85,15 +84,15 @@ const Body: React.FC = () => {
                     onInput={handleSelectInput}
                     className="flex text-center justify-center items-center h-20 border-2 border-gray-400 bg-white rounded-lg" >
                         <option value="none">{job.applicationStatus}</option>
-                        {["Offer", "Applied", "Interviewing", "Rejected"]
-                            .filter(status => status !== job.applicationStatus)
+                        {(currentFilter === FilterStatuses.Nothing && ["Offer", "Applied", "Interviewing", "Rejected"]
                             .map((status) => {
                                 return (
                                     <option key={status} value={status}>
                                         {status}
                                     </option>
                                 );
-                            })}
+                            })
+                        )}
                     </select>
                     <div 
                         id={`applicationDate-${job.id}`}
@@ -114,7 +113,72 @@ const Body: React.FC = () => {
                         {job.notes}
                     </div>
                 </React.Fragment>
-                ))}
+                )))
+                ||
+                (
+                    currentFilter !== FilterStatuses.Nothing &&
+                    currentJobData.filter((job) => job.applicationStatus === currentFilter).map((job) => (
+                <React.Fragment key={job.id}>
+                    <div 
+                        id={`jobTitle-${job.id}`}
+                        contentEditable={true}
+                        onInput={handleDivInput}
+                        suppressContentEditableWarning={true} 
+                        className="flex text-center justify-center items-center h-20 border-2 border-gray-400 bg-white rounded-lg"
+                    >
+                        {job.jobTitle}
+                    </div>
+                    <div 
+                        id={`companyName-${job.id}`}
+                        contentEditable={true}
+                        onInput={handleDivInput}
+                        suppressContentEditableWarning={true} 
+                        className="flex text-center justify-center items-center h-20 border-2 border-gray-400 bg-white rounded-lg">
+                        {job.companyName}
+                    </div>
+                    <select 
+                    name="jobStatus" 
+                    id={`applicationStatus-${job.id}`} 
+                    onInput={handleSelectInput}
+                    className="flex text-center justify-center items-center h-20 border-2 border-gray-400 bg-white rounded-lg" >
+                        <option value="none">{job.applicationStatus}</option>
+                        {(["Offer", "Applied", "Interviewing", "Rejected"]
+                            .map((status) => {
+                                return (
+                                    <option key={status} value={status}>
+                                        {status}
+                                    </option>
+                                );
+                            })
+                        )}
+                    </select>
+                    <div 
+                        id={`applicationDate-${job.id}`}
+                        contentEditable={true}
+                        onInput={handleDivInput}
+                        suppressContentEditableWarning={true} 
+                        className="flex text-center justify-center items-center h-20 border-2 border-gray-400 bg-white rounded-lg"
+                    >
+                        {job.applicationDate}
+                    </div>
+                    <div 
+                        id={`notes-${job.id}`}
+                        contentEditable={true}
+                        onInput={handleDivInput}
+                        suppressContentEditableWarning={true} 
+                        className="flex text-center justify-center items-center h-20 border-2 border-gray-400 bg-white rounded-lg"
+                    >
+                        {job.notes}
+                    </div>
+                </React.Fragment>
+                )))
+                
+                }
+
+
+                {/* To show modal here */}
+                {modalStatus && <AppModal endModal={closeModal} setCurrentJobData={setCurrentJobData} currentJobData={currentJobData}/>}
+
             </div>
         </div>
         </>
