@@ -1,21 +1,21 @@
-export interface Job {
-    id: string;
-    companyName: string;
-    jobTitle: string;
-    applicationStatus: string;
-    applicationDate: string;
-    notes: string;
-}
+import type { Job } from "./JobInterface";
 
 const getJobData = async (): Promise<Job[]> => {
-    const apiLink = "http://localhost:8000/jobs";
-    const response = await fetch(apiLink);
+    try {
+        const apiLink = "http://localhost:8000/jobs";
+        const response = await fetch(apiLink);
+        if (!response.ok) {
+            throw new Error("Network response was not ok");
+        }
 
-    if (!response.ok) {
-        throw new Error("Network response was not ok");
+        const data = await response.json();
+        console.log("API Response Successful")
+        return data;
+    } catch (error: unknown){
+        console.log("API Call unsuccessful");
+        return [];
     }
-    const data = await response.json();
-    return data;
+    
 }
 
-export default getJobData
+export default getJobData;

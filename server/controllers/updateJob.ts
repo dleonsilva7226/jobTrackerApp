@@ -1,6 +1,5 @@
 import { Request, Response } from 'express'
 import { jobs } from '../data/jobData'
-import { v4 as uuidv4 } from 'uuid'
 export const updateJob = async (req: Request, res: Response): Promise<void> => {
     const { id } = req.params
 
@@ -13,19 +12,13 @@ export const updateJob = async (req: Request, res: Response): Promise<void> => {
 
     //only works if all of the fields are provided
     const { companyName, jobTitle, applicationStatus, applicationDate, notes } = req.body
-    // Validate required fields
-    if (!companyName || !jobTitle || !applicationStatus || !applicationDate || !notes) {
-        res.status(404).json({
-            error: 'Missing required fields. Please provide companyName, jobTitle, applicationStatus, and applicationDate'
-        })
-        return
-    }
+
     // Update the job
-    jobs[jobToUpdate].companyName = companyName
-    jobs[jobToUpdate].jobTitle = jobTitle
-    jobs[jobToUpdate].applicationStatus = applicationStatus
-    jobs[jobToUpdate].applicationDate = applicationDate
-    jobs[jobToUpdate].notes = notes
+    if (companyName !== undefined ) { jobs[jobToUpdate].companyName = companyName }
+    if (jobTitle !== undefined) { jobs[jobToUpdate].jobTitle = jobTitle }
+    if (applicationStatus !== undefined) { jobs[jobToUpdate].applicationStatus = applicationStatus }
+    if (applicationDate !== undefined) { jobs[jobToUpdate].applicationDate = applicationDate }
+    if (notes !== undefined) { jobs[jobToUpdate].notes = notes }
     // Return the updated job
-    res.status(200).json(jobs)
+    res.status(200).json(jobs[jobToUpdate])
 }

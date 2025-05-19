@@ -1,28 +1,29 @@
 import React from 'react';
-import { useState, useEffect } from 'react';
-import { type Job } from "./getJobData";
+import { type Job } from "./JobInterface";
+import addToJobList from './addToJobList';
+import { type CreateJobInterface } from './createJobInterface';
+import type { JobUpdateInterface } from './JobUpdateInterface';
 
 export interface AppModalProps {
     endModal: () => void;
-    setCurrentJobData: React.Dispatch<React.SetStateAction<Job[]>>;
+    setCurrentJobData: (jobData: JobUpdateInterface, jobAppId: string) => Promise<void>;
     currentJobData: Job[];
 }
 
 
 const AppModal: React.FC<AppModalProps> = ({endModal, setCurrentJobData, currentJobData}) => {
-    const updateJobList = (event: React.FormEvent<HTMLFormElement>): void => {
+
+    const addNewJobListing = (event: React.FormEvent<HTMLFormElement>): void => {
         event.preventDefault();
         const formData = new FormData(event.currentTarget);
-        const newJobData: Job = {
-            id: currentJobData.length.toString() as string,
+        const newJobData: CreateJobInterface = {
             jobTitle: formData.get("newjobtitle") as string || "",
             companyName: formData.get("newcompany") as string || "",
             applicationStatus: formData.get("newstatus") as string || "",
             applicationDate: formData.get("newdayapplied") as string || "",
             notes: formData.get("newnotes") as string || "",
         };
-        setCurrentJobData([...currentJobData, newJobData]);
-        console.log(newJobData);
+        addToJobList(newJobData);
     }
 
     return (
@@ -30,7 +31,7 @@ const AppModal: React.FC<AppModalProps> = ({endModal, setCurrentJobData, current
         
         <div className="flex justify-center items-center absolute top-0 left-0 w-full h-full bg-gray-500 bg-opacity-70">
             
-            <form onSubmit={updateJobList} className="relative w-[500px] h-[700px] bg-[#A9A9A9] rounded-xl gap-[10px] flex flex-col justify-center items-center">
+            <form onSubmit={addNewJobListing} className="relative w-[500px] h-[700px] bg-[#A9A9A9] rounded-xl gap-[10px] flex flex-col justify-center items-center">
                 <button className="absolute top-2 right-2 text-[30px]" onClick={endModal}>[X]</button>
                 <div className="text-center font-bold text-[40px]">Add a New Job</div>
                 <div className="font-bold text-[25px]">Fill in the details below</div>
