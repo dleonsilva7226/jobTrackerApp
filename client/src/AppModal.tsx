@@ -1,7 +1,7 @@
 import React from 'react';
 import { type Job } from "./JobInterface";
 import addToJobList from './addToJobList';
-import { type CreateJobInterface } from './createJobInterface';
+import { type CreateJobInterface } from './CreateJobInterface';
 import type { JobUpdateInterface } from './JobUpdateInterface';
 
 export interface AppModalProps {

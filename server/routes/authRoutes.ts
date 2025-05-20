@@ -2,7 +2,9 @@ import express, { NextFunction, Router } from 'express'
 import {Request, Response} from 'express'
 import { authenticateToken } from '../middleware/authenticateToken.ts'
 import { authenticateUser } from '../middleware/authenticateUser.ts'
-import '../.env'
+import '../.env';
+import { AuthenticatedRequest } from '../interfaces/types.ts';
+
 
 export const authRouter: Router = express.Router()
 
@@ -15,8 +17,5 @@ authRouter.route('/login')
 // protected route
 authRouter.route('/protect')
     .get(authenticateToken, (req: Request, res: Response, next: NextFunction) => {
-        res.json({
-            message: 'PROTECTED ROUTE WORKSSSSSSSSS!',
-            authData: (req as any).user
-        })
+        res.json((req as unknown as AuthenticatedRequest).user)
     })

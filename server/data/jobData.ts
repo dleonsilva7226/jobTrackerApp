@@ -9,13 +9,6 @@ export interface Job {
     notes: string;
 }
 
-// export const IDs: string[] = [
-//     uuidv4(),
-//     uuidv4(),
-//     uuidv4(),
-//     uuidv4(),
-// ]
-
 export const jobs: Job[] = [
     {
       "id": "1",

@@ -1,9 +1,10 @@
 import { NextFunction } from "express";
 import { Request, Response } from "express";
 import { users } from "../data/userData.ts";
-import { v4 as uuidv4 } from "uuid";
-import { sign, TokenExpiredError } from "jsonwebtoken";
 import jwt from "jsonwebtoken";
+
+import dotenv from 'dotenv';
+dotenv.config();
 import '../.env'
 
 
@@ -18,12 +19,16 @@ export const authenticateUser = (req: Request, res: Response, next: NextFunction
             res.status(403).json({ message: 'Invalid username or password' });
             return;
         }
+        console.log("JWT secret is:", process.env.JWT_SECRET);
+
         if (!process.env.JWT_SECRET) {
             res.status(500).json({ message: 'JWT secret is not defined' });
             return;
         }
 
-        jwt.sign({findUser}, process.env.JWT_SECRET, { expiresIn: '1h' }, (err: Error | null, token: string | undefined) => {
+        jwt.sign({
+            findUser
+        }, process.env.JWT_SECRET, { expiresIn: '1h' }, (err: Error | null, token: string | undefined) => {
             if (err) {
                 res.status(500).json({ message: 'Error signing token' });
                 return;

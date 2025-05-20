@@ -1,7 +1,10 @@
 import { Request, Response } from "express";
 import jwt from "jsonwebtoken";
+import dotenv from 'dotenv';
+dotenv.config();
 import '../.env';
 import { NextFunction } from "express-serve-static-core";
+import { AuthenticatedRequest } from "../interfaces/types";
 
 export const authenticateToken = (req: Request, res: Response, next: NextFunction): void => {
     console.log('INFO: Authenticating token');
@@ -21,14 +24,19 @@ export const authenticateToken = (req: Request, res: Response, next: NextFunctio
         return;
     }
 
-    jwt.verify(token, process.env.JWT_SECRET, (err: Error | null, authData: any) => {
+    jwt.verify(token, process.env.JWT_SECRET, (err: Error | null, decoded: any) => {
         if (err) {
             console.log('ERROR: Could not connect to the protected route');
             res.sendStatus(403);
             return;
         } else {
             //adding a new parameter to the request object
-            (req as any).user = authData;
+            (req as unknown as AuthenticatedRequest).user = decoded.findUser as {
+                id: string;
+                username: string;
+                password: string;
+            };
+
             next();
         }
     });
