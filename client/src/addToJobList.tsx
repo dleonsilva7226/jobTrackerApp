@@ -1,5 +1,4 @@
-import { type CreateJobInterface } from "./createJobInterface";
-import { type Job } from "./JobInterface";
+import { type CreateJobInterface } from "./CreateJobInterface";
 
 const addToJobList = async (newJobApp: CreateJobInterface): Promise<void> => {
     try {
